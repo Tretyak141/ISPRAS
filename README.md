@@ -5,7 +5,7 @@ Effective sollution: distribute just graph connectivity components
 There's pointer in struct pool to see distrbuted subgraphs
 If subgraph was redist - skip
 
-Average programm time - 170-180 seconds without printing
+Average programm time - 200 seconds without printing
 
 Build script was done using bash-script
 
