@@ -10,4 +10,6 @@ Build script was done using bash-script
 
 All functions for work with struct pool was declared in file struct.c
 
+Programm was checked using Valgrind, there's no memory leaks
+
 Best wishes, Andrew Tretyakov
