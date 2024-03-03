@@ -69,6 +69,21 @@ int main()
         counter++;
     }
 
+    for (int i=0;i<N;i++)
+    {
+        if (!pools[i].distributed)
+        {
+            double volume = check_water(i);
+            set_nulls(i);
+            volume /= counting(i);
+            set_nulls(i);
+            redist_water(i,volume);
+            set_nulls(i);
+        }
+    }
+
+    for (int i=0;i<N;i++)
+        pools[i].distributed = 0;
 
 
     printf("\nFourth step\n\n");
