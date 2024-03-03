@@ -1,7 +1,7 @@
 #!/bin/bash
 
-gcc -c structs.c -o structs.o
+gcc -m64 -c structs.c -o structs.o && \
 
-gcc main.c structs.c -o result
+gcc -m64 main.c structs.c -o result && \
 
-./result
+valgrind ./result

@@ -1,161 +1,165 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <time.h>
 #include "structs.h"
 
-#define N 3
-#define K 2
-#define L 2
-#define M 1
+#define N 25000000
+#define K 10000000
+#define L 30000000
+#define M 2000000
 #define WMIN 1
 #define WMAX 500
 
-int cmp_pare(const void *num1,const void *num2)
-{
-    if (((int*)(*(int**)num1))[0]>((int*)(*(int**)num2))[0])
-    {
-
-        return 1;
-    }
-    if (((int*)(*(int**)num1))[0]<((int*)(*(int**)num2))[0])
-    {
-        return -1;
-    }
-    if (((int*)(*(int**)num1))[1]>((int*)(*(int**)num2))[1])
-    {
-        return 1;
-    }
-    if (((int*)(*(int**)num1))[1]<((int*)(*(int**)num2))[1])
-    {
-        return -1;
-    }
-    return 0;
-}
-
 int main()
 {
+    time_t start = clock();
     srand(time(NULL));
-    int **chanels_info;
-    chanels_info = malloc(sizeof(int*)*K);
     pools = malloc(N*sizeof(pool));
+
+
+
+    printf("First step\n\n");
+
+    printf("Start creating pools\n");
+    for (int i=0;i<N;i++)
+    {
+        pools[i] = create_pool();
+        //printf("Pool #%d created\n",i);
+    }
+    
+    printf("\nSecond step\n\n");
+    
+    printf("Adding water\n");
+    for (int i=0;i<N;i++)
+    {
+        double volume = 1 + rand()%500;
+        volume /= counting(i);
+        set_nulls(i);
+        add_water(i,volume);
+        set_nulls(i);
+        //printf("%lf litres was added to pool %d\n",volume, i);
+    }
+
+    printf("\nThird step\n\n");
+    printf("Creating chanels\n");
+
     for (int i=0;i<K;i++)
-    {
-        chanels_info[i] = malloc(sizeof(int)*2);
-        chanels_info[i][0] = -1;
-        chanels_info[i][1] = -1;
-    }
-    for (int i=0;i<K;i++)
-    {
-        chanels_info[i][0] = INT_MAX;
-        chanels_info[i][1] = INT_MAX;
-    }
-
-    printf("First and second step, creating and adding\n");
-    for(int i=0;i<N;i++)
-    {
-        pools[i] = create();
-        add_water(i,rand()%(WMAX - 1)+WMIN);
-    }
-
-    printf("Third step: making relations\n");
-
-    for(int i=0;i<K;i++)
     {
         int flag = 1;
+        int num1;
+        int num2;
         while (flag)
         {
-            int num1 = rand()%N;
-            int num2 = num1 + rand()%(N-num1);
-            if (num1==num2) continue;
-            int *a;
-            a = malloc(2*sizeof(int));
-            a[0] = num1;
-            a[1] = num2;                
-
-            qsort(chanels_info,i,sizeof(int*),cmp_pare);
-
-            if (!bsearch(&a,chanels_info,i,sizeof(int*),cmp_pare))
+            num1 = rand()%N;
+            num2 = rand()%N;
+            if (num1!=num2)
             {
-
-                chanels_info[i][0] = num1;
-                chanels_info[i][1] = num2;
-                printf("CREATED %d %d\n",num1,num2);
-                create_channel(num1,num2);
-                flag = 0;
+                flag = create_conn(num1,num2);
             }
-            free(a);
+        }
+        printf("%d Chanel %d-%d was created\n",i,num1,num2);
+    }
+
+
+
+    printf("\nFourth step\n\n");
+    printf("Measure water\n");
+    for (int i=0;i<N;i++)
+    {
+        //printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+    }
+
+    printf("\nFifth step\n\n");
+    printf("Adding water\n");
+    for (int i=0;i<L;i++)
+    {
+        int num = rand()%N;
+        double water = WMIN + rand()%WMAX;
+        //printf("%lf liters was added to pool #%d\n",water,num);
+        add_water(num,water);
+    }
+
+    for (int i=0;i<N;i++)
+    {
+        if (!pools[i].distributed)
+        {
+            double volume = check_water(i);
+            set_nulls(i);
+            volume /= counting(i);
+            set_nulls(i);
+            redist_water(i,volume);
+            set_nulls(i);
         }
     }
 
-    printf("Fourth step: measuring\n");
+    for (int i=0;i<N;i++)
+        pools[i].distributed = 0;
+
+    printf("\nSixth step\n\n");
+    printf("Measuring againg\n");
 
     for (int i=0;i<N;i++)
     {
-        printf("Volume of %d pool is %lf\n\n",i,measure_volume(i));
+        //printf("Volume of %d pool is %lf\n",i,pools[i].volume);
     }
 
-    printf("Fifth step: adding water\n");
-
-    for (int i=0;i<L;i++)
-    {
-        double x;
-        int num;
-        add_water(num = rand()%N,x=rand()%(WMAX - 1)+WMIN);
-        printf("ADDED %lf to %d\n",x,num);
-    }
-
-    printf("Sixth step: measuring\n");
-    for (int i=0;i<N;i++)
-    {
-        printf("%d\n",pools[i].num_of_gr);
-        printf("Volume of %d pool is %lf\n\n",i,measure_volume(i));
-    }
-
-    printf("Seventh step: destroy chanels\n");
+    printf("\nSeventh step\n\n");
+    printf("Destroy chanels\n");
 
     for (int i=0;i<M;i++)
     {
         int flag = 1;
+        int num1;
+        int num2;
+
         while (flag)
         {
-            int num1 = rand()%N;
-            int num2 = num1 + rand()%(N-num1);
-            int *a;
-            a = malloc(2*sizeof(int));
-            a[0] = num1;
-            a[1] = num2;
-            qsort(chanels_info,K,sizeof(int*),cmp_pare);
-            int **k;
-            printf("HERR %d %d\n",num1,num2);
-            k = bsearch(&a,chanels_info,K,sizeof(int*),cmp_pare);
-
-            if (k)
-            {
-                (*k)[0] = -1;
-                (*k)[1] = -1;
-                printf("HERE\n");
-                delete_connection(num1,num2);
-                                printf("HERE\n");
-
-                flag = 0;
-            }
+            num1 = rand()%N;
+            num2 = rand()%N;
+            if (num1!=num2)
+                flag = delete_conn(num1,num2);
         }
-        printf("DELETTED %d\n",i);
+    
+        printf("%d Chanel %d-%d was deleted\n",i,num1,num2);
     }
 
-    printf("Eightth step: adding water\n");
+    printf("\nEigth step\n\n");
+    printf("Adding water\n");
+
     for (int i=0;i<L;i++)
     {
-        double x;
-        int num;
-        add_water(num = rand()%N,x=rand()%(WMAX - 1)+WMIN);
-        printf("ADDED %lf to %d\n",x,num);
+        int num = rand()%N;
+        double water = WMIN + rand()%WMAX;
+        //printf("%lf liters was added to pool #%d\n",water,num);
+        add_water(num,water);
     }
-    printf("\nEnd: measuring\n\n");
+
     for (int i=0;i<N;i++)
     {
-        printf("Volume of %d pool is %lf\n",i,measure_volume(i));
+        if (!pools[i].distributed)
+        {
+            double volume = check_water(i);
+            set_nulls(i);
+            volume /= counting(i);
+            set_nulls(i);
+            redist_water(i,volume);
+            set_nulls(i);
+        }
     }
-    free_pools();
+    for (int i=0;i<N;i++)
+        pools[i].distributed = 0;
+
+
+    printf("\nNinth step\n\n");
+    printf("Measuring again\n");
+
+    for (int i=0;i<N;i++)
+    {
+        //printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+    }    
+    free_everything(N);
+    time_t end = clock() - start;
+    printf("\n\nTime: %lf\n\n",(double)end/CLOCKS_PER_SEC);
 }
 
