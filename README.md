@@ -2,9 +2,10 @@ This program uses classic graph algorithm - DFS.
 
 The hardest operation for algorithm - redistribution of water after filling pools
 Effective sollution: distribute just graph connectivity components
-There's pointer to see distrbuted subgraphs
+There's pointer in struct pool to see distrbuted subgraphs
+If subgraph was redist - skip
 
-Average programm time - 420-430 seconds
+Average programm time - 170-180 seconds without printing
 
 Build script was done using bash-script
 

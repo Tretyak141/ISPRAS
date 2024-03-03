@@ -30,7 +30,7 @@ int main()
     for (int i=0;i<N;i++)
     {
         pools[i] = create_pool();
-        //printf("Pool #%d created\n",i);
+        printf("Pool #%d created\n",i);
     }
     
     printf("\nSecond step\n\n");
@@ -43,7 +43,7 @@ int main()
         set_nulls(i);
         add_water(i,volume);
         set_nulls(i);
-        //printf("%lf litres was added to pool %d\n",volume, i);
+        printf("%lf litres was added to pool %d\n",volume, i);
     }
 
     printf("\nThird step\n\n");
@@ -75,7 +75,7 @@ int main()
     printf("Measure water\n");
     for (int i=0;i<N;i++)
     {
-        //printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
     }
 
     printf("\nFifth step\n\n");
@@ -84,7 +84,7 @@ int main()
     {
         int num = rand()%N;
         double water = WMIN + rand()%WMAX;
-        //printf("%lf liters was added to pool #%d\n",water,num);
+        printf("%lf liters was added to pool #%d\n",water,num);
         add_water(num,water);
     }
 
@@ -109,7 +109,7 @@ int main()
 
     for (int i=0;i<N;i++)
     {
-        //printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
     }
 
     printf("\nSeventh step\n\n");
@@ -137,7 +137,7 @@ int main()
     {
         int num = rand()%N;
         double water = WMIN + rand()%WMAX;
-        //printf("%lf liters was added to pool #%d\n",water,num);
+        printf("%lf liters was added to pool #%d\n",water,num);
         add_water(num,water);
     }
 
@@ -162,7 +162,7 @@ int main()
 
     for (int i=0;i<N;i++)
     {
-        //printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
     }    
     free_everything(N);
     for (int i=0;i<K;i++)

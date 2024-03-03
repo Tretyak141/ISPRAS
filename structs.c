@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <omp.h>
 
 struct pool
 {
@@ -11,10 +10,6 @@ struct pool
     int passed;
     int distributed;
 };
-
-
-
-
 
 typedef struct pool pool;
 
@@ -48,11 +43,6 @@ int cmp(const void *num1,const void *num2)
  * It isn't needed extra_memory and it helps
  * count every needed nums effective
 */
-
-double show_water(int num)
-{
-    return pools[num].volume;
-}
 
 int counting(int num1)
 {
