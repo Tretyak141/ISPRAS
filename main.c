@@ -17,7 +17,12 @@ int main()
     srand(time(NULL));
     pools = malloc(N*sizeof(pool));
 
+    int **conns;
+    conns = malloc(sizeof(int*)*K);
+    for (int i=0;i<K;i++)
+        conns[i] = malloc(sizeof(int)*2);
 
+    int counter = 0;
 
     printf("First step\n\n");
 
@@ -59,6 +64,9 @@ int main()
             }
         }
         printf("%d Chanel %d-%d was created\n",i,num1,num2);
+        conns[counter][0] = num1;
+        conns[counter][1] = num2;
+        counter++;
     }
 
 
@@ -109,19 +117,17 @@ int main()
 
     for (int i=0;i<M;i++)
     {
-        int flag = 1;
-        int num1;
-        int num2;
 
-        while (flag)
+        int num_con;
+        int flag = 1;
+        while(flag)
         {
-            num1 = rand()%N;
-            num2 = rand()%N;
-            if (num1!=num2)
-                flag = delete_conn(num1,num2);
+            num_con = rand()%counter;
+            if (conns[num_con][0]!=-1)
+            flag = delete_conn(conns[num_con][0],conns[num_con][1]);
         }
-    
-        printf("%d Chanel %d-%d was deleted\n",i,num1,num2);
+        conns[num_con][0] = -1;
+        printf("%d Chanel %d-%d was deleted\n",i,conns[num_con][0],conns[num_con][1]);
     }
 
     printf("\nEigth step\n\n");
@@ -159,6 +165,11 @@ int main()
         //printf("Volume of %d pool is %lf\n",i,pools[i].volume);
     }    
     free_everything(N);
+    for (int i=0;i<K;i++)
+    {
+        free(conns[i]);
+    }
+    free(conns);
     time_t end = clock() - start;
     printf("\n\nTime: %lf\n\n",(double)end/CLOCKS_PER_SEC);
 }
