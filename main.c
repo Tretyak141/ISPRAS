@@ -4,10 +4,10 @@
 #include <time.h>
 #include "structs.h"
 
-#define N 2500000
-#define K 1000000
-#define L 3000000
-#define M 200000
+#define N 25000000
+#define K 10000000
+#define L 30000000
+#define M 2000000
 #define WMIN 1
 #define WMAX 500
 
