@@ -18,40 +18,54 @@ typedef struct pool pool;
 
 extern pool *pools;
 
+/**
+ * @return Function create_pool return pool with settings 0 in all fields
+*/
+
 pool create_pool();
 
-int cmp(const void *num1,const void *num2);
+
+/**
+ * @param num Num is a number of pool in array of pools
+ * @return Returnable parametr is a volume of num's pool
+*/
 
 double show_water(int num);
 
-int counting(int num1);
-
-double check_water(int num1);
-
 /**
- * is_connected
- * 
- * Check ways from num1 to num2
- * Using DFS algorithm
+ * Create connection between num1 and num2 parametrs
+ * Create new edge
+ * Return 0 if edge was created
+ * Return 1 if edge was created earlier
 */
-
-int is_connected(int num1, int num2);
-
-/**
- * Setting 0 after DFS
- * Using... DFS)))
-*/
-
-void set_nulls(int num1);
-
-void redist_water(int num1, double volume);
 
 int create_conn(int num1,int num2);
 
+/**
+ * Delete connection between num1 and num2 parametrs
+ * Delete edge
+ * Return 0 if edge was deleted
+ * Return 1 if there's no edge between num1 and num2
+*/
+
 int delete_conn(int num1,int num2);
 
+/**
+ * Adding water to num1 pool
+*/
 
-void add_water(int num1,double water);
+void add_water(int num1, int water);
+
+/**
+ * Distribution for all the components after adding water
+*/
+
+void distributor_for_all_components(int num_of_pools);
+
+/**Delete all allocated memory
+ * Delete information about edge ans also
+ * about pools
+*/
 
 void free_everything(int numb);
 #endif

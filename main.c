@@ -4,10 +4,10 @@
 #include <time.h>
 #include "structs.h"
 
-#define N 25000000
-#define K 10000000
-#define L 30000000
-#define M 2000000
+#define N 2500000
+#define K 1000000
+#define L 3000000
+#define M 200000
 #define WMIN 1
 #define WMAX 500
 
@@ -16,7 +16,12 @@ int main()
     time_t start = clock();
     srand(time(NULL));
     pools = malloc(N*sizeof(pool));
-
+    /**
+     * conns has an information about created channels
+     * counter - num of created channels
+     * conns[i][0] - first elem of channel
+     * conns[i][1] - second elem of channel
+    */
     int **conns;
     conns = malloc(sizeof(int*)*K);
     for (int i=0;i<K;i++)
@@ -38,12 +43,9 @@ int main()
     printf("Adding water\n");
     for (int i=0;i<N;i++)
     {
-        double volume = 1 + rand()%500;
-        volume /= counting(i);
-        set_nulls(i);
+        int volume = 1 + rand()%500;
         add_water(i,volume);
-        set_nulls(i);
-        printf("%lf litres was added to pool %d\n",volume, i);
+        printf("%d litres was added to pool %d\n",volume, i);
     }
 
     printf("\nThird step\n\n");
@@ -63,28 +65,17 @@ int main()
                 flag = create_conn(num1,num2);
             }
         }
-        printf("%d Chanel %d-%d was created\n",i,num1,num2);
+        //printf("%d Chanel %d-%d was created\n",i,num1,num2);
+
+        //Creating information about channels
+        //conns[i][0] - first param
+        //conns[i][1] - second param
         conns[counter][0] = num1;
         conns[counter][1] = num2;
         counter++;
     }
 
-    for (int i=0;i<N;i++)
-    {
-        if (!pools[i].distributed)
-        {
-            double volume = check_water(i);
-            set_nulls(i);
-            volume /= counting(i);
-            set_nulls(i);
-            redist_water(i,volume);
-            set_nulls(i);
-        }
-    }
-
-    for (int i=0;i<N;i++)
-        pools[i].distributed = 0;
-
+    distributor_for_all_components(N);
 
     printf("\nFourth step\n\n");
     printf("Measure water\n");
@@ -98,26 +89,12 @@ int main()
     for (int i=0;i<L;i++)
     {
         int num = rand()%N;
-        double water = WMIN + rand()%WMAX;
-        printf("%lf liters was added to pool #%d\n",water,num);
+        int water = WMIN + rand()%WMAX;
+        printf("%d liters was added to pool #%d\n",water,num);
         add_water(num,water);
     }
 
-    for (int i=0;i<N;i++)
-    {
-        if (!pools[i].distributed)
-        {
-            double volume = check_water(i);
-            set_nulls(i);
-            volume /= counting(i);
-            set_nulls(i);
-            redist_water(i,volume);
-            set_nulls(i);
-        }
-    }
-
-    for (int i=0;i<N;i++)
-        pools[i].distributed = 0;
+    distributor_for_all_components(N);
 
     printf("\nSixth step\n\n");
     printf("Measuring againg\n");
@@ -151,26 +128,10 @@ int main()
     for (int i=0;i<L;i++)
     {
         int num = rand()%N;
-        double water = WMIN + rand()%WMAX;
-        printf("%lf liters was added to pool #%d\n",water,num);
+        int water = WMIN + rand()%WMAX;
+        printf("%d liters was added to pool #%d\n",water,num);
         add_water(num,water);
     }
-
-    for (int i=0;i<N;i++)
-    {
-        if (!pools[i].distributed)
-        {
-            double volume = check_water(i);
-            set_nulls(i);
-            volume /= counting(i);
-            set_nulls(i);
-            redist_water(i,volume);
-            set_nulls(i);
-        }
-    }
-    for (int i=0;i<N;i++)
-        pools[i].distributed = 0;
-
 
     printf("\nNinth step\n\n");
     printf("Measuring again\n");
@@ -180,11 +141,13 @@ int main()
         printf("Volume of %d pool is %lf\n",i,pools[i].volume);
     }    
     free_everything(N);
+
     for (int i=0;i<K;i++)
     {
         free(conns[i]);
     }
     free(conns);
+
     time_t end = clock() - start;
     printf("\n\nTime: %lf\n\n",(double)end/CLOCKS_PER_SEC);
 }
