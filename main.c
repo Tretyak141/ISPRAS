@@ -65,7 +65,7 @@ int main()
                 flag = create_conn(num1,num2);
             }
         }
-        //printf("%d Chanel %d-%d was created\n",i,num1,num2);
+        printf("%d Channel %d-%d was created\n",i,num1,num2);
 
         //Creating information about channels
         //conns[i][0] - first param
