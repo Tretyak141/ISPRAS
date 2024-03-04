@@ -118,8 +118,9 @@ int main()
             if (conns[num_con][0]!=-1)
             flag = delete_conn(conns[num_con][0],conns[num_con][1]);
         }
-        conns[num_con][0] = -1;
+
         printf("%d Chanel %d-%d was deleted\n",i,conns[num_con][0],conns[num_con][1]);
+        conns[num_con][0] = -1;
     }
 
     printf("\nEigth step\n\n");
