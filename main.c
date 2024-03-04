@@ -136,6 +136,8 @@ int main()
         add_water(num,water);
     }
 
+    distributor_for_all_components(N);
+
     printf("\nNinth step\n\n");
     printf("Measuring again\n");
 
