@@ -132,7 +132,7 @@ int main()
     {
         int num = rand()%N;
         int water = WMIN + rand()%WMAX;
-        printf("%d %d %d liters was added to pool #%d\n", i, water, num);
+        printf("%d %d liters was added to pool #%d\n", i, water, num);
         add_water(num,water);
     }
 
