@@ -130,9 +130,13 @@ double group_water(int num1, int ind)
     return ans;
 }
 
+
+
 /**
  * All function under this commentary was declared in structs.h
 */
+
+
 
 int create_conn(int num1,int num2)
 {
@@ -201,8 +205,6 @@ int delete_conn(int num1,int num2)
 
     return 0;
 }
-
-
 
 void add_water(int num1,int water)
 {

@@ -38,7 +38,6 @@ int main()
     for (int i=0;i<N;i++)
     {
         pools[i] = create_pool();
-        //printf("Pool #%d created\n",i);
     }
     printf("\nSecond step\n\n");
     
@@ -47,7 +46,6 @@ int main()
     {
         int volume = 1 + rand()%500;
         add_water(i,volume);
-        printf("%d litres was added to pool %d\n",volume, i);
     }
 
     printf("\nThird step\n\n");
@@ -67,7 +65,6 @@ int main()
                 flag = create_conn(num1,num2);
             }
         }
-        printf("%d Channel %d-%d was created\n",i,num1,num2);
 
         //Creating information about channels
         //conns[i][0] - first param
@@ -82,7 +79,7 @@ int main()
     printf("Measure water\n");
     for (int i=0;i<N;i++)
     {
-        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        show_water(i);
     }
 
     printf("\nFifth step\n\n");
@@ -91,7 +88,6 @@ int main()
     {
         int num = rand()%N;
         int water = WMIN + rand()%WMAX;
-        printf("%d %d liters was added to pool #%d\n",i, water, num);
         add_water(num,water);
     }
 
@@ -102,7 +98,7 @@ int main()
 
     for (int i=0;i<N;i++)
     {
-        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        show_water(i);
     }
 
     printf("\nSeventh step\n\n");
@@ -119,8 +115,6 @@ int main()
             if (conns[num_con][0]!=-1)
             flag = delete_conn(conns[num_con][0],conns[num_con][1]);
         }
-
-        printf("%d Chanel %d-%d was deleted\n",i,conns[num_con][0],conns[num_con][1]);
         conns[num_con][0] = -1;
     }
 
@@ -131,7 +125,6 @@ int main()
     {
         int num = rand()%N;
         int water = WMIN + rand()%WMAX;
-        printf("%d %d liters was added to pool #%d\n", i, water, num);
         add_water(num,water);
     }
 
@@ -142,7 +135,7 @@ int main()
 
     for (int i=0;i<N;i++)
     {
-        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        show_water(i);
     }    
     free_everything(N);
 
