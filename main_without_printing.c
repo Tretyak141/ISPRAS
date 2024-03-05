@@ -27,7 +27,6 @@ int main()
     conns = malloc(sizeof(int*)*K);
     for (int i=0;i<K;i++)
         conns[i] = malloc(sizeof(int)*2);
-
     int counter = 0;
 
     printf("First step\n\n");
@@ -39,12 +38,13 @@ int main()
     {
         pools[i] = create_pool();
     }
+    
     printf("\nSecond step\n\n");
     
     printf("Adding water\n");
     for (int i=0;i<N;i++)
     {
-        int volume = 1 + rand()%500;
+        int volume = WMIN + rand()%WMAX;
         add_water(i,volume);
     }
 
@@ -81,7 +81,8 @@ int main()
     {
         show_water(i);
     }
-
+    
+    
     printf("\nFifth step\n\n");
     printf("Adding water\n");
     for (int i=0;i<L;i++)
@@ -95,18 +96,15 @@ int main()
 
     printf("\nSixth step\n\n");
     printf("Measuring againg\n");
-
     for (int i=0;i<N;i++)
     {
         show_water(i);
     }
-
     printf("\nSeventh step\n\n");
     printf("Destroy chanels\n");
 
     for (int i=0;i<M;i++)
     {
-
         int num_con;
         int flag = 1;
         while(flag)
@@ -120,14 +118,12 @@ int main()
 
     printf("\nEigth step\n\n");
     printf("Adding water\n");
-
     for (int i=0;i<L;i++)
     {
         int num = rand()%N;
         int water = WMIN + rand()%WMAX;
         add_water(num,water);
     }
-
     distributor_for_all_components(N);
 
     printf("\nNinth step\n\n");

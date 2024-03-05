@@ -82,6 +82,10 @@ int counting(int num1, int ind)
 void redist_water(int num1, double volume, int ind)
 {
     if (pools[num1].passed) return;
+    if (!ind)
+    {
+        if (pools[num1].end_edges == pools[num1].start_edges) return;
+    }
     pools[num1].passed = 1;
     pools[num1].distributed = 1;
 
@@ -110,7 +114,6 @@ double group_water(int num1, int ind)
     if (pools[num1].passed) return 0;
     double ans = pools[num1].volume;
     pools[num1].passed = 1;
-
     for (int i=pools[num1].start_edges;i<pools[num1].end_edges;i++)
     {
 
@@ -179,7 +182,6 @@ int create_conn(int num1,int num2)
 
 int delete_conn(int num1,int num2) 
 {
-    qsort(pools[num1].edges, pools[num1].end_edges, sizeof(int),cmp);
     int *f1;
 
     int counter_connected1 = pools[num1].end_edges;
@@ -190,8 +192,6 @@ int delete_conn(int num1,int num2)
     *f1 = -1;
     
     pools[num1].start_edges ++;
-
-    qsort(pools[num2].edges, counter_connected2, sizeof(int), cmp);
 
     int *f2;
     f2 = bsearch(&num1,pools[num2].edges, counter_connected2, sizeof(int),cmp);
@@ -220,6 +220,7 @@ void distributor_for_all_components(int num_of_pools)
 {
     for (int i=0;i<num_of_pools;i++)
     {
+        if (pools[i].end_edges == pools[i].start_edges) continue;; //if it's point with no edges
         if (!pools[i].distributed)
         {
             double average_volume = group_water(i,0);
