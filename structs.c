@@ -220,7 +220,7 @@ void distributor_for_all_components(int num_of_pools)
 {
     for (int i=0;i<num_of_pools;i++)
     {
-        if (pools[i].end_edges == pools[i].start_edges) continue;; //if it's point with no edges
+        if (pools[i].end_edges == pools[i].start_edges) continue; //if it's point with no edges
         if (!pools[i].distributed)
         {
             double average_volume = group_water(i,0);
