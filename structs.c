@@ -81,7 +81,7 @@ int counting(int num1, int ind)
 
 void redist_water(int num1, double volume, int ind)
 {
-    if (pools[num1].passed) 1;
+    if (pools[num1].passed) return;
     pools[num1].passed = 1;
     pools[num1].distributed = 1;
 
