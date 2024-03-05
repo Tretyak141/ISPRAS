@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <time.h>
+#include <sys/resource.h>
 #include "structs.h"
 
 #define N 25000000
@@ -13,8 +14,20 @@
 
 int main()
 {
+    /**
+     * This fragment needs to make stack bigger
+     * If there's a lot of edges in graph, DFS algorithm
+     * has max recursion depth and gives a mistake "Stack overflow"
+     * Stack return it's started volume (16Mb in my PC) after execution
+    */
+    struct rlimit rl;
+    int res = getrlimit(RLIMIT_STACK,&rl);
+    rl.rlim_cur = 1024*1024*1024;
+    setrlimit(RLIMIT_STACK,&rl);
+
     time_t start = clock();
     srand(time(NULL));
+
     pools = malloc(N*sizeof(pool));
     /**
      * conns has an information about created channels
