@@ -6,7 +6,7 @@
 #include "structs.h"
 
 #define N 25000000
-#define K 13500000
+#define K 10000000
 #define L 30000000
 #define M 2000000
 #define WMIN 1
@@ -93,7 +93,7 @@ int main()
     printf("Measure water\n");
     for (int i=0;i<N;i++)
     {
-        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        printf("Volume of %d pool is %lf\n",i,show_water(i));
     }
 
     printf("\nFifth step\n\n");
@@ -113,7 +113,7 @@ int main()
 
     for (int i=0;i<N;i++)
     {
-        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        printf("Volume of %d pool is %lf\n",i,show_water(i));
     }
 
     printf("\nSeventh step\n\n");
@@ -153,7 +153,7 @@ int main()
 
     for (int i=0;i<N;i++)
     {
-        printf("Volume of %d pool is %lf\n",i,pools[i].volume);
+        printf("Volume of %d pool is %lf\n",i,show_water(i));
     }    
     free_everything(N);
 

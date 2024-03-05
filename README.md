@@ -8,7 +8,7 @@ If subgraph was redist - skip
 Average programm time - 15 seconds without printing 
 (printing water volume, created/deleted 
 connections or added water) 
-and 330 seconds with printing everything
+and 280 seconds with printing everything
 
 Build script was done using bash-script
 
