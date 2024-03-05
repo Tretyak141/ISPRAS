@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <time.h>
-#include <omp.h>
 #include "structs.h"
 
 #define N 25000000
