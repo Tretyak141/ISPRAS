@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <time.h>
-#include <sys/resource.h>
 #include "structs.h"
 
 #define N 25000000
@@ -14,21 +13,9 @@
 
 int main()
 {
-    /**
-     * This fragment needs to make stack bigger
-     * If there's a lot of edges in graph, DFS algorithm
-     * has max recursion depth and gives a mistake "Stack overflow"
-     * Stack return it's started volume (16Mb in my PC) after execution
-    */
-    struct rlimit rl;
-    int res = getrlimit(RLIMIT_STACK,&rl);
-    rl.rlim_cur = 1024*1024*1024;
-    setrlimit(RLIMIT_STACK,&rl);
-
     time_t start = clock();
     srand(time(NULL));
 
-    pools = malloc(N*sizeof(pool));
     /**
      * conns has an information about created channels
      * counter - num of created channels
@@ -36,21 +23,20 @@ int main()
      * conns[i][1] - second elem of channel
     */
     int **conns;
+    int counter = 0;
+
     conns = malloc(sizeof(int*)*K);
     for (int i=0;i<K;i++)
         conns[i] = malloc(sizeof(int)*2);
-    int counter = 0;
 
     printf("First step\n\n");
 
 
     printf("Start creating pools\n");
     
-    for (int i=0;i<N;i++)
-    {
-        pools[i] = create_pool();
-    }
-    
+    creating_pools(N);
+
+
     printf("\nSecond step\n\n");
     
     printf("Adding water\n");
@@ -85,6 +71,7 @@ int main()
         conns[counter][1] = num2;
         counter++;
     }
+
 
     distributor_for_all_components(N);
     printf("\nFourth step\n\n");
@@ -144,15 +131,14 @@ int main()
     for (int i=0;i<N;i++)
     {
         show_water(i);
-    }    
-    free_everything(N);
+    } 
 
     for (int i=0;i<K;i++)
     {
         free(conns[i]);
     }
+    free_everything(N);
     free(conns);
-
     time_t end = clock();
     end -= start;
     printf("\n\nTime: %lf\n\n",(double)end/CLOCKS_PER_SEC);

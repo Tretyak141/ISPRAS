@@ -4,25 +4,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct pool
-{
-    double volume;
-    int *edges;
-    int start_edges;
-    int end_edges;
-    int passed;
-    int distributed;
-};
-
-typedef struct pool pool;
-
-extern pool *pools;
-
 /**
  * @return Function create_pool return pool with settings 0 in all fields
 */
 
-pool create_pool();
+void creating_pools(int counter_of_pools);
 
 
 /**

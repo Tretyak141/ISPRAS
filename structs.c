@@ -1,32 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "incapsulated.h"
 
-struct pool
+
+void creating_pools(int counter_of_pools)
 {
-    double volume;
-    int *edges;
-    int start_edges; 
-    int end_edges;
-    int passed;
-    int distributed;
-};
-
-typedef struct pool pool;
-
-pool *pools;
-
-pool create_pool()
-{
-    pool ret;
-    ret.volume = 0;
-    ret.edges = NULL;
-    ret.start_edges = 0;
-    ret.end_edges = 0;  
-    ret.passed = 0;    
-    ret.distributed = 0;
-    return ret;
+    pools = malloc(sizeof(pool)*counter_of_pools);
+    for (int i=0;i<counter_of_pools;i++)
+    {
+        pools[i] = create_pool();
+    }
 }
-
 
 int cmp(const void *num1,const void *num2)
 {
@@ -34,112 +18,6 @@ int cmp(const void *num1,const void *num2)
     if ((*(int*)num1)<(*(int*)num2)) return -1;
     return 0;
 }
-
-void set_nulls(int num1)
-{
-    if (!pools[num1].passed) return;
-    pools[num1].passed = 0;
-
-    for (int i=pools[num1].start_edges;i<pools[num1].end_edges;i++)
-    {
-        int num_of_neigh = pools[num1].edges[i];
-
-        if (pools[num_of_neigh].passed)
-        {
-            set_nulls(num_of_neigh);
-        }
-    }
-}
-
-/**
- * Function for counting points in connectivity component
- * Need in redistribution of water
-*/
-
-int counting(int num1, int ind)
-{
-    if (pools[num1].passed) return 0;
-    int ans = 1;
-    pools[num1].passed = 1;
-    for (int i=pools[num1].start_edges;i<pools[num1].end_edges;i++)
-    {
-        int num_of_neigh = pools[num1].edges[i]; 
-        if (!pools[num_of_neigh].passed)
-        {
-            ans += counting(num_of_neigh,1);
-        }
-    }
-    if (!ind) set_nulls(num1);
-    return ans;
-}
-
-/**
- * Redistribution water in one connectivity component
- * @param ind Indicator of start point (0 - start point)
- * @param volume New volume of group. Counting as group_water
-*/
-
-void redist_water(int num1, double volume, int ind)
-{
-    if (pools[num1].passed) return;
-    if (!ind)
-    {
-        if (pools[num1].end_edges == pools[num1].start_edges) return;
-    }
-    pools[num1].passed = 1;
-    pools[num1].distributed = 1;
-
-    pools[num1].volume = volume;
-    
-    for (int i=pools[num1].start_edges;i<pools[num1].end_edges;i++)
-    {
-        int num_of_neigh = pools[num1].edges[i];
-        if (!pools[num_of_neigh].passed)
-        {
-            redist_water(num_of_neigh,volume,1);
-        }
-    }
-    if (!ind)
-        set_nulls(num1);
-}
-
-
-/**
- * Counting average volume in connectivity component
- * @param ind Indicator of start point
-*/
-
-double group_water(int num1, int ind)
-{
-    if (pools[num1].passed) return 0;
-    double ans = pools[num1].volume;
-    pools[num1].passed = 1;
-    for (int i=pools[num1].start_edges;i<pools[num1].end_edges;i++)
-    {
-
-        int num_of_neigh = pools[num1].edges[i];
-
-        if (!pools[num_of_neigh].passed)
-        {
-            ans += group_water(num_of_neigh,1);
-        }
-    }
-    if (!ind)
-    {
-        set_nulls(num1);
-        ans /= counting(num1,0);
-    }
-
-    return ans;
-}
-
-
-
-/**
- * All function under this commentary was declared in structs.h
-*/
-
-
 
 int create_conn(int num1,int num2)
 {
@@ -223,8 +101,8 @@ void distributor_for_all_components(int num_of_pools)
         if (pools[i].end_edges == pools[i].start_edges) continue; //if it's point with no edges
         if (!pools[i].distributed)
         {
-            double average_volume = group_water(i,0);
-            redist_water(i,average_volume,0);
+            double average_volume = group_water(i);
+            redist_water(i,average_volume);
         }
     }
     for (int i=0;i<num_of_pools;i++)

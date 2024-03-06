@@ -2,3 +2,5 @@ result
 structs.o
 result_without
 swapfile
+*.o
+.vscode/tasks.json
