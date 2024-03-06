@@ -5,7 +5,7 @@ Effective sollution: distribute just graph connectivity components
 There's pointer in struct pool to see distrbuted subgraphs
 If subgraph was redist - skip
 
-Average programm time - 18-20 seconds without printing 
+Average programm time - 17-20 seconds without printing 
 (printing water volume, created/deleted 
 connections or added water) 
 and 280 seconds with printing everything
