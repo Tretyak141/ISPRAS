@@ -23,8 +23,7 @@ int main()
      * conns[i][1] - second elem of channel
     */
     int **conns;
-    int counter = 0;
-
+    
     conns = malloc(sizeof(int*)*K);
     for (int i=0;i<K;i++)
         conns[i] = malloc(sizeof(int)*2);
@@ -58,9 +57,8 @@ int main()
         //Creating information about channels
         //conns[i][0] - first param
         //conns[i][1] - second param
-        conns[counter][0] = num1;
-        conns[counter][1] = num2;
-        counter++;
+        conns[i][0] = num1;
+        conns[i][1] = num2;
     }
 
     distributor_for_all_components(N);
@@ -90,7 +88,7 @@ int main()
         char flag = 1;
         while(flag)
         {
-            num_con = rand()%counter;
+            num_con = rand()%K;
             if (conns[num_con][0]!=-1)
             flag = delete_conn(conns[num_con][0],conns[num_con][1]);
         }
