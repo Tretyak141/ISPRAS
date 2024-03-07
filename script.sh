@@ -6,6 +6,6 @@ gcc -c graphs.c -o graphs.o && \
 
 gcc -c structs.c -o structs.o &&\
 
-gcc main.c graphs.c structs.c stack.c -o result_without && \
+gcc main.c graphs.c structs.c stack.c -o result && \
 
-./result_without 
+./result
