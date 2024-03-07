@@ -1,9 +1,6 @@
 #ifndef _structs_h_
 #define _structs_h_
 
-#include <stdlib.h>
-#include <stdio.h>
-
 /**
  * @return Function create_pool return pool with settings 0 in all fields
 */

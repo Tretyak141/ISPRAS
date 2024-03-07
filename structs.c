@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "incapsulated.h"
+#include "graphs.h"
 
 
 void creating_pools(int counter_of_pools)
@@ -12,75 +12,20 @@ void creating_pools(int counter_of_pools)
     }
 }
 
-int cmp(const void *num1,const void *num2)
+char create_conn(int num1,int num2)
 {
-    if ((*(int*)num1)>(*(int*)num2)) return 1;
-    if ((*(int*)num1)<(*(int*)num2)) return -1;
+    if (is_connected(num1,num2)) return 1;
+
+    add_edge(num1,num2);
+    add_edge(num2,num1);
     return 0;
 }
 
-int create_conn(int num1,int num2)
+char delete_conn(int num1,int num2) 
 {
-    int counter_connected1 = pools[num1].end_edges;
-    int counter_connected2 = pools[num2].end_edges;
-
-    qsort(pools[num1].edges,counter_connected1,sizeof(int),cmp);
-
-    if (bsearch(&num2,pools[num1].edges,counter_connected1,sizeof(int),cmp)) return 1;
-    pools[num1].end_edges ++;
-    counter_connected1++;
-
-    if (!pools[num1].edges)
-    {
-        pools[num1].edges = malloc(sizeof(int));
-    }
-    else
-    {
-        pools[num1].edges = realloc(pools[num1].edges,sizeof(int)*counter_connected1);
-    }
-
-    pools[num1].edges[counter_connected1 - 1] = num2;
-
-    pools[num2].end_edges ++;
-    counter_connected2++;
-    if (!pools[num2].edges)
-    {
-        pools[num2].edges = malloc(sizeof(int));
-    }
-    else
-    {
-        pools[num2].edges = realloc(pools[num2].edges,sizeof(int)*(counter_connected2));
-    }
-    pools[num2].edges[counter_connected2 - 1] = num1;
-
-    qsort(pools[num1].edges,counter_connected1,sizeof(int),cmp);
-    qsort(pools[num2].edges, counter_connected2, sizeof(int),cmp);
-    return 0;
-}
-
-int delete_conn(int num1,int num2) 
-{
-    int *f1;
-
-    int counter_connected1 = pools[num1].end_edges;
-    int counter_connected2 = pools[num2].end_edges;
-
-    if (!(f1 = bsearch(&num2,pools[num1].edges, counter_connected1, sizeof(int),cmp))) return 1;
-    
-    *f1 = -1;
-    
-    pools[num1].start_edges ++;
-
-    int *f2;
-    f2 = bsearch(&num1,pools[num2].edges, counter_connected2, sizeof(int),cmp);
-    *f2 = -1;
-
-    pools[num2].start_edges++;
-
-    qsort(pools[num1].edges,counter_connected1,sizeof(int),cmp);
-    qsort(pools[num2].edges,counter_connected2,sizeof(int),cmp);
-
-
+    if (!is_connected(num1,num2)) return 1;
+    delete_edge(num1,num2);
+    delete_edge(num2,num1);
     return 0;
 }
 

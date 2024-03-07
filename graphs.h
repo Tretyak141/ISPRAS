@@ -1,8 +1,7 @@
-#ifndef _incapsulated_h_
-#define _incapsulated_h_
+#ifndef _graphs_h_
+#define _graphs_h_
 #define N 25000000
 
-#include "stack.h"
 
 struct pool
 {
@@ -20,6 +19,11 @@ pool *pools;
 
 pool create_pool();
 
+char is_connected (int num1,int num2);
+
+void add_edge(int num1, int num2);
+
+void delete_edge(int num1,int num2);
 
 void set_nulls(int num1);
 
