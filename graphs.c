@@ -1,6 +1,5 @@
 #include "stack.h"
 #include <stdlib.h>
-#define N 25000000
 
 struct pool
 {
