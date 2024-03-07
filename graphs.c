@@ -7,8 +7,8 @@ struct pool
     int *edges;
     int start_edges;
     int end_edges;
-    int passed;
-    int distributed;
+    char passed;
+    char distributed;
 };
 
 typedef struct pool pool;
